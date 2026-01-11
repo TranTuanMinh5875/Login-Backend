@@ -47,3 +47,38 @@ class UserModel(db.Model):
             is_verified=user_entity.is_verified,
             last_login=user_entity.last_login
         )
+    
+class OrderModel(db.Model):
+    __tablename__ = 'orders'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    order_number = db.Column(db.String(50), unique=True, nullable=False)
+    customer_name = db.Column(db.String(100))
+    table_number = db.Column(db.String(20))
+    items = db.Column(db.Text)
+    total_amount = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(50), default='pending')
+    kitchen_notes = db.Column(db.Text)
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    creator = db.relationship('UserModel', foreign_keys=[created_by])
+    assignee = db.relationship('UserModel', foreign_keys=[assigned_to])
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'order_number': self.order_number,
+            'customer_name': self.customer_name,
+            'table_number': self.table_number,
+            'items': self.items,
+            'total_amount': self.total_amount,
+            'status': self.status,
+            'kitchen_notes': self.kitchen_notes,
+            'created_by': self.created_by,
+            'assigned_to': self.assigned_to,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
