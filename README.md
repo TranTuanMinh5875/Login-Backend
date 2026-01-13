@@ -1,7 +1,9 @@
 # Login-Backend
 
-Run 'python -m venv .venv' to create a virtual environment
+Run 'py -m venv .venv' to create a virtual environment
+
+Run '.venv\Scripts\activate.ps1' to activate the virtual environment
 
 Run 'pip install -r requirements.txt' to install dependencies
 
-Run 'python run.py' to start
+Run 'py run.py' to start
